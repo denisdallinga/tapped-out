@@ -6,6 +6,6 @@ Gem::Specification.new do |s|
   s.description = "A gem which exposes the tapped-out.net API"
   s.authors     = ["Denis Dallinga"]
   s.email       = 'denisdallinga@gmail.com'
-  s.files       = ["lib/tapped_out.rb"]
+  s.files       = `git ls-files`.split("\n")
   s.license     = 'MIT'
 end
