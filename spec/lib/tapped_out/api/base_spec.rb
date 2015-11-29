@@ -23,6 +23,59 @@ module TappedOut
           end
         end
       end
+
+      describe '.build_pathname' do
+        let(:result) { Base.build_pathname(['Hello', 'World!']) }
+        it 'returns a string' do
+          expect(result).to be_an String
+        end
+
+        it 'joins the strings in the array with an "/"' do
+          expect(result).to eq 'Hello/World!'
+        end
+      end
+
+      describe '.build_uri' do
+        before do
+          expect_uri(given: result)
+        end
+
+        context 'with empty path and empty parameters' do
+          let(:result) { Base.build_uri(nil, nil) }
+
+          it 'returns the correct string' do
+            expect(result.to_s).to eq 'http://tappedout.net/'
+          end
+        end
+
+        context 'with path and empty parameters' do
+          let(:result) { Base.build_uri('hello/world', nil) }
+
+          it 'returns the correct string' do
+            expect(result.to_s).to eq 'http://tappedout.net/hello/world'
+          end
+        end
+
+        context 'with empty path and parameters' do
+          let(:result) { Base.build_uri(nil, hello: 'world') }
+
+          it 'returns the correct string' do
+            expect(result.to_s).to eq 'http://tappedout.net/?hello=world'
+          end
+        end
+
+        context 'with path and parameters' do
+          let(:result) { Base.build_uri('hello/world', hello: 'world') }
+
+          it 'returns the correct string' do
+            expect(result.to_s).to eq 'http://tappedout.net/hello/world?hello=world'
+          end
+        end
+
+        def expect_uri(given:)
+          expect(given).to be_an Addressable::URI
+        end
+      end
     end
   end
 end

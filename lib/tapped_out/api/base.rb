@@ -31,6 +31,7 @@ module TappedOut
       end
 
       def build_uri(path, query_values)
+        path = '' if path.nil?
         uri = Addressable::URI.join(BASE_URL, path)
         uri.query_values = query_values
 
