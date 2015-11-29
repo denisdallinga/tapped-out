@@ -6,10 +6,10 @@ module TappedOut
   module API
     # Base module for sending request to the tappedout api
     module Base
+      FailedRequestException = Class.new(StandardError)
+
       BASE_URL = 'http://tappedout.net/'
       PATH_PREFIX = 'api'
-
-      FailedRequestException = Class.new(StandardError)
 
       def execute_request(path_postfix, query_values = {})
         path = Pathname.new(PATH_PREFIX) + Pathname.new(path_postfix)
