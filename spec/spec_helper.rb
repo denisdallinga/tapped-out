@@ -4,6 +4,8 @@ SimpleCov.start
 require 'bundler/setup'
 Bundler.setup
 
+require 'webmock/rspec'
+
 require 'tapped_out'
 
 RSpec.configure do |config|
