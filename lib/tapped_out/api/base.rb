@@ -1,5 +1,4 @@
 require 'addressable/uri'
-require 'pathname'
 require 'net/http'
 
 module TappedOut
@@ -11,10 +10,11 @@ module TappedOut
       BASE_URL = 'http://tappedout.net/'
       PATH_PREFIX = 'api'
 
+      module_function
+
       def execute_request(path_postfix, query_values = {})
-        path = Pathname.new(PATH_PREFIX) + Pathname.new(path_postfix)
-        uri = Addressable::URI.join(BASE_URL, path.to_s)
-        uri.query_values = query_values
+        path = build_pathname([PATH_PREFIX, path_postfix])
+        uri = build_uri(path, query_values)
 
         response = Net::HTTP.get_response(uri)
 
@@ -25,7 +25,17 @@ module TappedOut
           "Request did not succeed: #{response.class}"
         )
       end
-      module_function :execute_request
+
+      def build_pathname(parts)
+        File.join(parts)
+      end
+
+      def build_uri(path, query_values)
+        uri = Addressable::URI.join(BASE_URL, path)
+        uri.query_values = query_values
+
+        uri
+      end
     end
   end
 end
