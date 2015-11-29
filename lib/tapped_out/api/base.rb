@@ -1,5 +1,6 @@
 require 'addressable/uri'
 require 'net/http'
+require 'oj'
 
 module TappedOut
   module API
@@ -18,7 +19,7 @@ module TappedOut
 
         response = Net::HTTP.get_response(uri)
 
-        return response.body if response.is_a?(Net::HTTPSuccess)
+        return Oj.load(response.body) if response.is_a?(Net::HTTPSuccess)
 
         fail(
           FailedRequestException.new,

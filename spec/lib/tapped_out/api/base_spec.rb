@@ -7,9 +7,9 @@ module TappedOut
         context 'when the request succeeds' do
           it 'returns the body of the response' do
             stub_request(:get, 'http://tappedout.net/api/test')
-              .to_return(status: 200, body: 'Hello World!')
+              .to_return(status: 200, body: '{"Hello": "World!"}')
 
-            expect(Base.execute_request('test')).to eq 'Hello World!'
+            expect(Base.execute_request('test')).to eq 'Hello' => 'World!'
           end
         end
 
