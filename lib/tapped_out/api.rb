@@ -2,12 +2,14 @@ module TappedOut
   # Module which exposes the top level endpoints API
   module API
     autoload :Base, 'tapped_out/api/base.rb'
+    autoload :Deck, 'tapped_out/api/deck.rb'
 
     def featured_decks
     end
     module_function :featured_decks
 
     def latest_decks
+      Deck.latest
     end
     module_function :latest_decks
 
