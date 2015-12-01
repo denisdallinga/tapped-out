@@ -5,3 +5,7 @@ Ruby client gem for the api of tapped-out.net
 ```ruby
 TappedOut::API.latest_decks
 ```
+## Featured decks
+```ruby
+TappedOut::API.featured_decks
+```
