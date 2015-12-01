@@ -11,6 +11,15 @@ module TappedOut
           'deck/latest/latest/'
         )
       end
+
+      describe '.featured' do
+        it_should_behave_like(
+          'external request',
+          Deck,
+          'featured',
+          'deck/latest/featured/'
+        )
+      end
     end
   end
 end

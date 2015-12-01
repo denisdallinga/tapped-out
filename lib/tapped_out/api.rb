@@ -7,6 +7,7 @@ module TappedOut
     module_function
 
     def featured_decks
+      Deck.featured
     end
 
     def latest_decks
