@@ -9,7 +9,7 @@ module TappedOut
             stub_request(:get, 'http://tappedout.net/api/test')
               .to_return(status: 200, body: '{"Hello": "World!"}')
 
-            expect(Base.execute_request('test')).to eq 'Hello' => 'World!'
+            expect(Base.execute_request('test')).to eq('Hello' => 'World!')
           end
         end
 
@@ -20,6 +20,39 @@ module TappedOut
 
             expect { Base.execute_request('test') }
               .to raise_error(Base::FailedRequestException)
+          end
+        end
+      end
+
+      describe '.execute_authorized_request' do
+        context 'when no session token has been set' do
+          it 'raises an error' do
+            expect { Base.execute_authorized_request('test') }
+              .to raise_error(Base::MissingSessionTokenException)
+          end
+        end
+
+        context 'when the session token has been set' do
+          before do
+            allow(Environment).to(
+              receive(:session_token)
+                .and_return('my_session_token')
+            )
+            headers = {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Cookie' => 'tapped=my_session_token; path=',
+              'User-Agent' => 'Ruby'
+            }
+            stub_request(:get, 'http://tappedout.net/api/test')
+              .with(headers: headers)
+              .to_return(status: 200, body: '{"Hello": "World!"}', headers: {})
+          end
+
+          it 'executes the request' do
+            expect(Base.execute_authorized_request('test')).to(
+              eq('Hello' => 'World!')
+            )
           end
         end
       end
@@ -35,45 +68,30 @@ module TappedOut
         end
       end
 
-      describe '.build_uri' do
+      describe '.authorize_request!' do
         before do
-          expect_uri(given: result)
+          @request = {}
         end
 
-        context 'with empty path and empty parameters' do
-          let(:result) { Base.build_uri(nil, nil) }
-
-          it 'returns the correct string' do
-            expect(result.to_s).to eq 'http://tappedout.net/'
+        context 'when the session token is not set' do
+          it 'raises an error' do
+            expect { Base.authorize_request!(@request) }
+              .to raise_error(Base::MissingSessionTokenException)
           end
         end
 
-        context 'with path and empty parameters' do
-          let(:result) { Base.build_uri('hello/world', nil) }
-
-          it 'returns the correct string' do
-            expect(result.to_s).to eq 'http://tappedout.net/hello/world'
+        context 'when the session token is set' do
+          before do
+            allow(Environment).to(
+              receive(:session_token)
+                .and_return('my_session_token')
+            )
           end
-        end
 
-        context 'with empty path and parameters' do
-          let(:result) { Base.build_uri(nil, hello: 'world') }
-
-          it 'returns the correct string' do
-            expect(result.to_s).to eq 'http://tappedout.net/?hello=world'
+          it 'adds the cookie string to the request object' do
+            Base.authorize_request!(@request)
+            expect(@request['Cookie']).to eq 'tapped=my_session_token; path='
           end
-        end
-
-        context 'with path and parameters' do
-          let(:result) { Base.build_uri('hello/world', hello: 'world') }
-
-          it 'returns the correct string' do
-            expect(result.to_s).to eq 'http://tappedout.net/hello/world?hello=world'
-          end
-        end
-
-        def expect_uri(given:)
-          expect(given).to be_an Addressable::URI
         end
       end
     end

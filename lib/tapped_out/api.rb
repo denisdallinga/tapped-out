@@ -3,6 +3,7 @@ module TappedOut
   module API
     autoload :Base, 'tapped_out/api/base.rb'
     autoload :Deck, 'tapped_out/api/deck.rb'
+    autoload :Collection, 'tapped_out/api/collection.rb'
 
     module_function
 
@@ -14,7 +15,8 @@ module TappedOut
       Deck.latest
     end
 
-    def deck_list
+    def deck_list(deck_name)
+      Collection.deck(deck_name)
     end
   end
 end

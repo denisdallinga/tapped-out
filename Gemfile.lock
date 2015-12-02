@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tapped_out (0.1.0)
+    tapped_out (0.3.0)
       addressable
       oj
 

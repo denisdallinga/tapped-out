@@ -8,6 +8,7 @@ module TappedOut
           'external request',
           Deck,
           'latest',
+          nil,
           'deck/latest/latest/'
         )
       end
@@ -17,6 +18,7 @@ module TappedOut
           'external request',
           Deck,
           'featured',
+          nil,
           'deck/latest/featured/'
         )
       end

@@ -1,2 +1,1 @@
-- Implement request to the collection:deck endpoint
-- Handle following redirectshttp://stackoverflow.com/questions/7210232/ruby-nethttp-following-301-redirects
+- Handle following redirects http://stackoverflow.com/questions/7210232/ruby-nethttp-following-301-redirects
